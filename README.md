@@ -29,6 +29,7 @@ seven different demos.
 | [`06_mlflow`](06_mlflow/) | **MLflow** | *not* a framework: it **traces, evaluates and packages** agents from any framework | — |
 | [`07_a2a_multi_agent`](07_a2a_multi_agent/) | **A2A protocol** | agents run as **separate web services** and talk over HTTP | remote researcher + writer + orchestrator |
 | [`08_monitoring`](08_monitoring/) | **DIY tracker · Phoenix · Langfuse · LangSmith** | track **calls, tokens, cost, latency and failures**; all have a free option, plus a table of alternatives | — |
+| [`09_mcp`](09_mcp/) | **MCP (Model Context Protocol)** | a weather **MCP server** wrapping a free API, a plain client, and **one agent** that discovers the tools | — |
 
 Every folder has its own `README.md`, `requirements.txt` and a **notebook** (`<folder>.ipynb`) that
 runs in Colab, VS Code or Jupyter.
@@ -104,7 +105,7 @@ With [uv](https://docs.astral.sh/uv/) it's even faster: `uv venv .venv-crewai &&
 
 ---
 
-## 3. Suggested workshop flow (≈ 5½ hours)
+## 3. Suggested workshop flow (≈ 6 hours)
 
 | time | session |
 |---|---|
@@ -115,6 +116,7 @@ With [uv](https://docs.astral.sh/uv/) it's even faster: `uv venv .venv-crewai &&
 | 30 min | **MLflow**: trace every framework, evaluate, package |
 | 45 min | **A2A**: agents as web services talking to each other |
 | 30 min | **Monitoring**: DIY usage report, Phoenix traces, Langfuse and LangSmith dashboards |
+| 30 min | **MCP**: one tool server, any client: weather API → MCP server → agent |
 | 15 min | Wrap-up: choosing a framework (table below) |
 
 ## 4. Which framework should I use?
@@ -128,6 +130,7 @@ With [uv](https://docs.astral.sh/uv/) it's even faster: `uv venv .venv-crewai &&
 | Gemini, Google Cloud, built-in dev UI, A2A | **Google ADK** |
 | .NET + Python, Azure, enterprise workflows | **Microsoft Agent Framework** |
 | to see, test and ship any of the above | **MLflow** |
+| to share tools between apps and agents (Claude Desktop, VS Code, any framework) | **MCP** |
 | to watch cost, latency and failures in production | **Phoenix** (local), **LangSmith** (hosted, LangChain-first) or **Langfuse** (open source) |
 | agents from different teams/frameworks cooperating | **A2A** |
 
@@ -153,7 +156,7 @@ With [uv](https://docs.astral.sh/uv/) it's even faster: `uv venv .venv-crewai &&
 - The notebooks are generated from the scripts: `python tools/build_notebooks.py`. After pushing to
   GitHub, set `GITHUB_REPO` in that file so the Colab badges point to your repo.
 - Tested on Python 3.12 with langgraph 1.2, crewai 1.15, openai-agents 0.22, google-adk 2.10,
-  agent-framework 1.19, mlflow 3.16, a2a-sdk 1.1, arize-phoenix 20, langfuse 4 and langsmith 0.14.
+  agent-framework 1.19, mlflow 3.16, a2a-sdk 1.1, arize-phoenix 20, langfuse 4, langsmith 0.14 and mcp 2.2.
 
 ---
 

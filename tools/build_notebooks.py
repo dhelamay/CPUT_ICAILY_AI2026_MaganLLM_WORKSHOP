@@ -100,6 +100,14 @@ FOLDERS = {
             "Skip this cell if Phoenix is already running.",
             "import phoenix as px\nsession = px.launch_app()   # UI on port 6006 (in Colab: click the link it prints)")},
     },
+    "09_mcp": {
+        "title": "MCP — a weather MCP server, a client, and an agent that uses it",
+        "intro": "**MCP (Model Context Protocol)** is a standard plug for AI tools. `weather_server.py` wraps a free "
+                 "public API (Open-Meteo, no key) as MCP tools; `01` calls them directly (no LLM, no key); `02` is "
+                 "**one agent** that discovers the tools at run time and lets the LLM decide when to use them.",
+        "scripts": ["01_mcp_client.py", "02_mcp_agent.py"],
+        "files": ["weather_server.py"],
+    },
 }
 
 
