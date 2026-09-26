@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LangGraph Drawn Out</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --paper: #F5F7F4;
+  --paper-2: #ECF0EC;
+  --ink: #1B2326;
+  --muted: #56666A;
+  --line: #D3DBD7;
+  --grid: rgba(14, 124, 107, 0.06);
+  --edge: #0E7C6B;
+  --node: #E3EFEA;
+  --node-stroke: #0E7C6B;
+  --human: #B7791F;
+  --human-bg: #F7ECD9;
+  --code-bg: #1C2527;
+  --code-ink: #E4ECE9;
+  --code-dim: #8FA3A0;
+  --code-key: #7FD6C2;
+  --code-str: #E8C07D;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #101617; --paper-2: #162022; --ink: #E2EAE7; --muted: #95A6A3; --line: #2A3735;
+    --grid: rgba(79, 195, 168, 0.06); --edge: #4FC3A8; --node: #182624; --node-stroke: #4FC3A8;
+    --human: #E3A94E; --human-bg: #2B2214; --code-bg: #0B1011; --code-ink: #DDE7E4; --code-dim: #7F9491;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #101617; --paper-2: #162022; --ink: #E2EAE7; --muted: #95A6A3; --line: #2A3735;
+  --grid: rgba(79, 195, 168, 0.06); --edge: #4FC3A8; --node: #182624; --node-stroke: #4FC3A8;
+  --human: #E3A94E; --human-bg: #2B2214; --code-bg: #0B1011; --code-ink: #DDE7E4; --code-dim: #7F9491;
+}
+
+body {
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font: 16px/1.65 var(--body);
+  padding-inline: 16px;
+  padding-block: 0 64px;
+}
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+header { padding-top: 56px; display: flex; flex-direction: column; gap: 14px; }
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--edge); }
+h1 { font: 700 clamp(40px, 7vw, 68px)/1.02 var(--display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 700 30px/1.15 var(--display); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+h3 { font: 600 19px/1.3 var(--display); margin: 0; }
+p { margin: 0; max-width: 66ch; }
+.lede { font-size: 19px; color: var(--muted); max-width: 60ch; }
+section { display: flex; flex-direction: column; gap: 18px; }
+.sec-head { display: flex; flex-direction: column; gap: 6px; }
+.step { font: 600 12px/1 var(--mono); color: var(--muted); letter-spacing: .08em; }
+code { font-family: var(--mono); font-size: .88em; background: var(--paper-2); border: 1px solid var(--line); border-radius: 4px; padding: 0 .3em; }
+pre {
+  margin: 0; overflow-x: auto; background: var(--code-bg); color: var(--code-ink);
+  font: 13.5px/1.6 var(--mono); padding: 16px 18px; border-radius: 8px;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+pre .c { color: var(--code-dim); }
+pre .k { color: var(--code-key); }
+pre .s { color: var(--code-str); }
+.file { font: 12px/1 var(--mono); color: var(--muted); margin-bottom: -10px; }
+
+/* the three parts */
+.parts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.part { background: var(--paper); padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+.part .tag { font: 600 12px/1 var(--mono); color: var(--edge); letter-spacing: .1em; text-transform: uppercase; }
+.part p { font-size: 15px; color: var(--muted); }
+@media (max-width: 620px) { .parts { grid-template-columns: 1fr; } }
+
+/* diagrams */
+figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.diagram { overflow-x: auto; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+.diagram svg { display: block; width: 100%; min-width: 520px; height: auto; }
+figcaption { font-size: 14px; color: var(--muted); }
+svg .n rect { fill: var(--node); stroke: var(--node-stroke); stroke-width: 1.5; }
+svg .n text, svg .t { fill: var(--ink); font: 600 14px var(--mono); }
+svg .h rect { fill: var(--human-bg); stroke: var(--human); stroke-width: 1.5; }
+svg .term circle { fill: var(--ink); }
+svg .term text { fill: var(--paper); font: 600 10px var(--mono); }
+svg .e { fill: none; stroke: var(--edge); stroke-width: 1.6; }
+svg .e.dash { stroke-dasharray: 5 4; stroke: var(--human); }
+svg .lbl { fill: var(--muted); font: 12px var(--mono); }
+svg .lbl.h { fill: var(--human); }
+svg .ah { fill: var(--edge); }
+svg .ah.h { fill: var(--human); }
+
+/* walkthrough list: a real sequence (the order the graph is built) */
+ol.build { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 28px; counter-reset: s; }
+ol.build > li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 4px 14px; }
+ol.build > li::before { content: counter(s); grid-row: span 3; font: 700 22px/1.2 var(--display); color: var(--edge); border-top: 2px solid var(--edge); padding-top: 4px; }
+ol.build > li > * { grid-column: 2; }
+ol.build > li > h3 { margin-bottom: 4px; }
+ol.build > li > pre { margin-top: 10px; }
+.human-note { border-left: 3px solid var(--human); background: var(--human-bg); padding: 12px 16px; border-radius: 0 6px 6px 0; }
+
+/* stream trace */
+.trace { font: 13px/1.7 var(--mono); background: var(--paper-2); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; white-space: pre; }
+.trace .hl { color: var(--edge); font-weight: 600; }
+.trace .hh { color: var(--human); font-weight: 600; }
+
+/* tables */
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--paper); }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 12px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--paper-2); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { white-space: nowrap; }
+ul.plain { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; max-width: 66ch; }
+footer { border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--muted); }
+a { color: var(--edge); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--edge); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+    <marker id="ahh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah h" d="M0 0 L10 5 L0 10 z"/></marker>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">SA-LIB AI Workshop 2026 · Day 2 · folder 01_langgraph</span>
+  <h1>LangGraph, drawn out</h1>
+  <p class="lede">An agent is a loop: think, act, look at the result, repeat. LangGraph writes that loop as a graph you can
+    see, pause, save and resume. This page builds one up from a single node to a research assistant that waits for your approval.</p>
+</header>
+
+<section id="parts">
+  <div class="sec-head"><h2>Three parts make every graph</h2></div>
+  <div class="parts">
+    <div class="part"><span class="tag">State</span><h3>The shared whiteboard</h3>
+      <p>A typed dict every node can read. Nodes never edit it directly. They return an <em>update</em> and LangGraph merges it in.</p></div>
+    <div class="part"><span class="tag">Nodes</span><h3>Plain Python functions</h3>
+      <p><code>def node(state) -&gt; dict</code>. A node can call an LLM, run tools, or do ordinary Python.</p></div>
+    <div class="part"><span class="tag">Edges</span><h3>Who runs next</h3>
+      <p>Fixed (<code>A → B</code>) or conditional: a function looks at the state and returns the next node's name.</p></div>
+  </div>
+</section>
+
+<section id="smallest">
+  <div class="sec-head"><span class="step">01_first_agent.py</span><h2>The smallest graph</h2></div>
+  <p>One node that calls the model. <code>MessagesState</code> is a ready-made state with a single key, <code>messages</code>,
+    that <strong>appends</strong> new messages instead of replacing the list.</p>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 520 80" role="img" aria-label="START to chatbot to END">
+        <g class="term"><circle cx="40" cy="40" r="24"/><text x="40" y="44" text-anchor="middle">START</text></g>
+        <path class="e" d="M64 40 H198" marker-end="url(#ah)"/>
+        <g class="n"><rect x="200" y="20" width="120" height="40" rx="6"/><text x="260" y="45" text-anchor="middle">chatbot</text></g>
+        <path class="e" d="M320 40 H454" marker-end="url(#ah)"/>
+        <g class="term"><circle cx="480" cy="40" r="24"/><text x="480" y="44" text-anchor="middle">END</text></g>
+      </svg>
+    </div>
+  </figure>
+  <pre><code><span class="k">def</span> chatbot(state: MessagesState):
+    reply = model.invoke([SYSTEM] + state[<span class="s">"messages"</span>])
+    <span class="k">return</span> {<span class="s">"messages"</span>: [reply]}          <span class="c"># an UPDATE, merged into the state</span>
+
+graph = StateGraph(MessagesState)
+graph.add_node(<span class="s">"chatbot"</span>, chatbot)
+graph.add_edge(START, <span class="s">"chatbot"</span>)
+graph.add_edge(<span class="s">"chatbot"</span>, END)
+agent = graph.compile()                        <span class="c"># compile -> a runnable app</span>
+agent.invoke({<span class="s">"messages"</span>: [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">"hi"</span>}]})</code></pre>
+</section>
+
+<section id="loop">
+  <div class="sec-head"><span class="step">02_agent_with_tools.py</span><h2>The agent loop: two nodes and a conditional edge</h2></div>
+  <p>This is what LangChain's <code>create_agent</code> builds for you. The <strong>agent</strong> node asks the model, which
+    can reply with text or with tool calls. <code>tools_condition</code> reads the last message: tool calls send the flow to the
+    <strong>tools</strong> node, anything else ends the run. After the tools run, the flow goes back to the agent.</p>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 560 170" role="img" aria-label="START to agent; agent to tools if tool call, tools back to agent; agent to END otherwise">
+        <g class="term"><circle cx="40" cy="60" r="24"/><text x="40" y="64" text-anchor="middle">START</text></g>
+        <path class="e" d="M64 60 H178" marker-end="url(#ah)"/>
+        <g class="n"><rect x="180" y="40" width="120" height="40" rx="6"/><text x="240" y="65" text-anchor="middle">agent</text></g>
+        <path class="e" d="M300 60 H454" marker-end="url(#ah)"/>
+        <text class="lbl" x="377" y="50" text-anchor="middle">no tool call</text>
+        <g class="term"><circle cx="480" cy="60" r="24"/><text x="480" y="64" text-anchor="middle">END</text></g>
+        <path class="e" d="M220 80 V118" marker-end="url(#ah)"/>
+        <text class="lbl" x="130" y="104">tool call?</text>
+        <g class="n"><rect x="180" y="120" width="120" height="40" rx="6"/><text x="240" y="145" text-anchor="middle">tools</text></g>
+        <path class="e" d="M260 120 V82" marker-end="url(#ah)"/>
+        <text class="lbl" x="272" y="104">results</text>
+      </svg>
+    </div>
+    <figcaption>Plan (agent) → act (tools) → observe (back to agent). The loop ends when the model stops asking for tools.</figcaption>
+  </figure>
+  <pre><code>model_with_tools = model.bind_tools([web_search, word_count])   <span class="c"># the model now knows the tools exist</span>
+
+graph.add_node(<span class="s">"agent"</span>, agent_node)
+graph.add_node(<span class="s">"tools"</span>, ToolNode(tools))                  <span class="c"># runs whatever tools were requested</span>
+graph.add_edge(START, <span class="s">"agent"</span>)
+graph.add_conditional_edges(<span class="s">"agent"</span>, tools_condition)      <span class="c"># -&gt; "tools" or END</span>
+graph.add_edge(<span class="s">"tools"</span>, <span class="s">"agent"</span>)                           <span class="c"># the loop</span></code></pre>
+</section>
+
+<section id="memory">
+  <div class="sec-head"><span class="step">03_agent_with_memory.py</span><h2>Memory is a checkpointer plus a thread id</h2></div>
+  <p>Compile with a <strong>checkpointer</strong> and LangGraph saves the full state after every step. The
+    <code>thread_id</code> in the config picks which saved conversation to continue. The same id gives the same memory, and a new id starts fresh.</p>
+  <pre><code>agent = graph.compile(checkpointer=InMemorySaver())
+config = {<span class="s">"configurable"</span>: {<span class="s">"thread_id"</span>: <span class="s">"chat-1"</span>}}
+
+agent.invoke({<span class="s">"messages"</span>: [(<span class="s">"user"</span>, <span class="s">"hi! my name is m0h."</span>)]}, config)
+agent.invoke({<span class="s">"messages"</span>: [(<span class="s">"user"</span>, <span class="s">"what's my name?"</span>)]}, config)   <span class="c"># -&gt; "m0h"</span>
+agent.get_state(config).values[<span class="s">"messages"</span>]                               <span class="c"># inspect what was saved</span></code></pre>
+  <p>The same checkpointer makes <strong>pause and resume</strong> possible. That's the key to the human-in-the-loop step below.
+    <code>InMemorySaver</code> forgets when the script stops. Swap in the SQLite or Postgres saver to keep memory across restarts.</p>
+</section>
+
+<section id="deep-dive">
+  <div class="sec-head"><span class="step">06_langgraph_deep_dive.py</span><h2>Deep dive: a research assistant that asks before it publishes</h2></div>
+  <p>A router decides whether a question needs research. Research runs the tool loop. Then the graph <strong>pauses</strong>
+    and shows you the draft. Approve it and it's published. Reject it with feedback and the researcher tries again with your comment.</p>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 760 360" role="img" aria-label="Deep-dive graph: START, router, chat or researcher with tools loop, human_review, publish, END; rejection loops back to researcher">
+        <g class="term"><circle cx="36" cy="170" r="24"/><text x="36" y="174" text-anchor="middle">START</text></g>
+        <path class="e" d="M60 170 H104" marker-end="url(#ah)"/>
+        <g class="n"><rect x="106" y="150" width="104" height="40" rx="6"/><text x="158" y="175" text-anchor="middle">router</text></g>
+
+        <path class="e" d="M210 160 C 240 160, 240 80, 272 80" marker-end="url(#ah)"/>
+        <text class="lbl" x="226" y="108">"chat"</text>
+        <path class="e" d="M210 180 C 240 180, 240 250, 272 250" marker-end="url(#ah)"/>
+        <text class="lbl" x="216" y="236">"research"</text>
+
+        <g class="n"><rect x="274" y="60" width="120" height="40" rx="6"/><text x="334" y="85" text-anchor="middle">chat</text></g>
+        <g class="n"><rect x="274" y="230" width="120" height="40" rx="6"/><text x="334" y="255" text-anchor="middle">researcher</text></g>
+        <path class="e" d="M314 270 V300" marker-end="url(#ah)"/>
+        <g class="n"><rect x="274" y="302" width="120" height="40" rx="6"/><text x="334" y="327" text-anchor="middle">tools</text></g>
+        <path class="e" d="M354 302 V272" marker-end="url(#ah)"/>
+        <text class="lbl" x="404" y="296">tool calls? loop</text>
+
+        <path class="e" d="M394 80 C 440 80, 440 160, 470 160" marker-end="url(#ah)"/>
+        <path class="e" d="M394 245 C 440 245, 440 180, 470 180" marker-end="url(#ah)"/>
+        <text class="lbl" x="410" y="212">draft ready</text>
+
+        <g class="n h"><rect x="472" y="150" width="140" height="40" rx="6"/><text x="542" y="175" text-anchor="middle">human_review</text></g>
+        <text class="lbl h" x="542" y="140" text-anchor="middle">interrupt() pauses here</text>
+
+        <path class="e" d="M612 170 H640" marker-end="url(#ah)"/>
+        <text class="lbl" x="612" y="200">approved</text>
+        <g class="n"><rect x="642" y="150" width="96" height="40" rx="6"/><text x="690" y="175" text-anchor="middle">publish</text></g>
+        <path class="e" d="M690 190 V268" marker-end="url(#ah)"/>
+        <g class="term"><circle cx="690" cy="294" r="24"/><text x="690" y="298" text-anchor="middle">END</text></g>
+
+        <path class="e dash" d="M542 190 C 542 262, 470 262, 398 256" marker-end="url(#ahh)"/>
+        <text class="lbl h" x="482" y="282">rejected + feedback</text>
+      </svg>
+    </div>
+    <figcaption>Teal edges are wired when the graph is built. The dashed amber edge is chosen at run time by <code>Command(goto=...)</code> from inside <code>human_review</code>.</figcaption>
+  </figure>
+
+  <ol class="build">
+    <li>
+      <h3>A custom state with a reducer</h3>
+      <p>Several fields instead of just messages. <code>Annotated[list, add_messages]</code> is a <strong>reducer</strong>:
+        updates to <code>messages</code> are appended, while every other field is simply overwritten.</p>
+      <pre><code><span class="k">class</span> State(TypedDict, total=<span class="k">False</span>):
+    question: str
+    route: str                                           <span class="c"># "chat" or "research"</span>
+    messages: Annotated[list[AnyMessage], add_messages]  <span class="c"># append, don't overwrite</span>
+    draft: str
+    feedback: str                                        <span class="c"># what the human said</span></code></pre>
+    </li>
+    <li>
+      <h3>A router with structured output</h3>
+      <p>The model must answer with one of two words, enforced by a Pydantic schema. The conditional edge then maps that
+        value to a node. We use <code>method="function_calling"</code> because it works on every provider in <code>.env</code>.</p>
+      <pre><code><span class="k">class</span> Route(BaseModel):
+    route: Literal[<span class="s">"chat"</span>, <span class="s">"research"</span>]
+
+<span class="k">def</span> router(state):
+    decision = llm.with_structured_output(Route, method=<span class="s">"function_calling"</span>).invoke(state[<span class="s">"question"</span>])
+    <span class="k">return</span> {<span class="s">"route"</span>: decision.route}
+
+g.add_conditional_edges(<span class="s">"router"</span>, <span class="k">lambda</span> s: s[<span class="s">"route"</span>], {<span class="s">"chat"</span>: <span class="s">"chat"</span>, <span class="s">"research"</span>: <span class="s">"researcher"</span>})</code></pre>
+    </li>
+    <li>
+      <h3>The tool loop inside a larger graph</h3>
+      <p>Same pattern as step 02, but the exit goes to <code>human_review</code> instead of <code>END</code>. When the model stops calling tools, its reply becomes the draft.</p>
+      <pre><code><span class="k">def</span> after_researcher(state):
+    <span class="k">return</span> <span class="s">"tools"</span> <span class="k">if</span> tools_condition(state) == <span class="s">"tools"</span> <span class="k">else</span> <span class="s">"human_review"</span>
+
+g.add_conditional_edges(<span class="s">"researcher"</span>, after_researcher, [<span class="s">"tools"</span>, <span class="s">"human_review"</span>])
+g.add_edge(<span class="s">"tools"</span>, <span class="s">"researcher"</span>)</code></pre>
+    </li>
+    <li>
+      <h3>Human-in-the-loop with <code>interrupt()</code></h3>
+      <p><code>interrupt(payload)</code> stops the graph in the middle of the node. The checkpointer saves everything,
+        <code>invoke</code> or <code>stream</code> returns, and your program can show the draft to a person, even hours later.</p>
+      <pre><code><span class="k">def</span> human_review(state):
+    decision = interrupt({<span class="s">"draft"</span>: state[<span class="s">"draft"</span>]})     <span class="c"># &lt;- pauses HERE</span>
+    <span class="k">if</span> decision == <span class="s">"yes"</span>:
+        <span class="k">return</span> Command(goto=<span class="s">"publish"</span>)
+    <span class="k">return</span> Command(goto=<span class="s">"researcher"</span>, update={<span class="s">"feedback"</span>: decision})
+
+g.add_node(<span class="s">"human_review"</span>, human_review, destinations=(<span class="s">"publish"</span>, <span class="s">"researcher"</span>, <span class="s">"chat"</span>))</code></pre>
+      <p class="human-note"><strong>Command</strong> does two jobs at once: it updates the state and picks the next node. That's why
+        <code>human_review</code> has no outgoing edges. Its <code>destinations</code> only tell LangGraph where it may jump, so the drawing is correct.</p>
+    </li>
+    <li>
+      <h3>Resume with <code>Command(resume=...)</code></h3>
+      <p>To continue, call the graph again with the <strong>same thread_id</strong> and the human's answer. That answer becomes the
+        return value of <code>interrupt()</code> and the node finishes.</p>
+      <pre><code>state = app.get_state(config)
+<span class="k">if</span> state.next:                                       <span class="c"># paused? ("human_review",)</span>
+    answer = input(<span class="s">"approve? "</span>)
+    app.invoke(Command(resume=answer), config)</code></pre>
+    </li>
+    <li>
+      <h3>Watch it run with streaming</h3>
+      <p><code>stream_mode="updates"</code> yields one item per finished node, which is ideal for showing progress. This is the output for a question that needs research:</p>
+      <div class="trace">  -&gt; <span class="hl">router</span>        updated: route
+  -&gt; <span class="hl">researcher</span>    updated: messages, feedback        <span style="color:var(--muted)"># asks for web_search</span>
+  -&gt; <span class="hl">tools</span>         updated: messages
+  -&gt; <span class="hl">researcher</span>    updated: messages, feedback, draft <span style="color:var(--muted)"># done researching</span>
+
+--- DRAFT for review ---
+LangGraph 1.2 is the latest release …
+approve? (yes / or type feedback): <span class="hh">yes</span>
+  -&gt; <span class="hh">human_review</span>
+  -&gt; <span class="hl">publish</span></div>
+    </li>
+  </ol>
+</section>
+
+<section id="multi-agent">
+  <div class="sec-head"><span class="step">05_multi_agent.py</span><h2>Multi-agent is just more nodes on one state</h2></div>
+  <p>A researcher, a writer and a reviewer share one <code>TeamState</code>. The reviewer counts words and a conditional edge
+    sends the draft back to the writer while it's too long, up to three drafts. Each "agent" is a node, and a node can be a
+    plain Python step: the reviewer uses no LLM at all.</p>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 640 150" role="img" aria-label="START, researcher, writer, reviewer; reviewer loops back to writer if too long, else END">
+        <g class="term"><circle cx="34" cy="60" r="24"/><text x="34" y="64" text-anchor="middle">START</text></g>
+        <path class="e" d="M58 60 H94" marker-end="url(#ah)"/>
+        <g class="n"><rect x="96" y="40" width="120" height="40" rx="6"/><text x="156" y="65" text-anchor="middle">researcher</text></g>
+        <path class="e" d="M216 60 H254" marker-end="url(#ah)"/>
+        <g class="n"><rect x="256" y="40" width="110" height="40" rx="6"/><text x="311" y="65" text-anchor="middle">writer</text></g>
+        <path class="e" d="M366 60 H404" marker-end="url(#ah)"/>
+        <g class="n"><rect x="406" y="40" width="110" height="40" rx="6"/><text x="461" y="65" text-anchor="middle">reviewer</text></g>
+        <path class="e" d="M516 60 H578" marker-end="url(#ah)"/>
+        <text class="lbl" x="522" y="50">≤ 60 words</text>
+        <g class="term"><circle cx="604" cy="60" r="24"/><text x="604" y="64" text-anchor="middle">END</text></g>
+        <path class="e" d="M461 80 C 461 128, 311 128, 311 82" marker-end="url(#ah)"/>
+        <text class="lbl" x="386" y="140" text-anchor="middle">too long → rewrite (max 3 drafts)</text>
+      </svg>
+    </div>
+  </figure>
+</section>
+
+<section id="cheatsheet">
+  <div class="sec-head"><h2>Cheat sheet</h2></div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>API</th><th>what it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>StateGraph(State)</code></td><td>start a graph whose nodes share <code>State</code></td></tr>
+        <tr><td><code>MessagesState</code></td><td>ready-made state: a <code>messages</code> list that appends</td></tr>
+        <tr><td><code>add_node(name, fn)</code></td><td>register a function as a node</td></tr>
+        <tr><td><code>add_edge(a, b)</code></td><td>always go from a to b (<code>START</code> / <code>END</code> are special names)</td></tr>
+        <tr><td><code>add_conditional_edges(a, fn, map)</code></td><td><code>fn(state)</code> returns the next node's name</td></tr>
+        <tr><td><code>ToolNode(tools)</code> · <code>tools_condition</code></td><td>run requested tools · route to "tools" or <code>END</code></td></tr>
+        <tr><td><code>compile(checkpointer=...)</code></td><td>turn on memory, pause/resume and time travel</td></tr>
+        <tr><td><code>{"configurable": {"thread_id": …}}</code></td><td>which conversation to load and save</td></tr>
+        <tr><td><code>interrupt(value)</code></td><td>pause inside a node and wait for a human</td></tr>
+        <tr><td><code>Command(goto=…, update=…)</code></td><td>from a node: update the state and jump</td></tr>
+        <tr><td><code>Command(resume=…)</code></td><td>from the caller: continue a paused graph</td></tr>
+        <tr><td><code>stream(…, stream_mode="updates")</code></td><td>yield each node's update as it finishes</td></tr>
+        <tr><td><code>get_graph().draw_mermaid()</code></td><td>print the graph as Mermaid (paste into mermaid.live)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="mistakes">
+  <div class="sec-head"><h2>Common mistakes</h2></div>
+  <ul class="plain">
+    <li><strong>Returning the whole state from a node.</strong> Return only the keys you changed. With a reducer like
+      <code>add_messages</code>, returning the old messages again duplicates them.</li>
+    <li><strong><code>interrupt()</code> without a checkpointer.</strong> There's nowhere to save the paused state, so it raises an error.</li>
+    <li><strong>Resuming with a different <code>thread_id</code>.</strong> That starts a new run instead of continuing the paused one.</li>
+    <li><strong>Loops with no exit.</strong> Always give a loop a way out (the reviewer stops after 3 drafts). LangGraph's
+      <code>recursion_limit</code>, 25 steps by default, is the safety net.</li>
+    <li><strong>Side effects before <code>interrupt()</code>.</strong> On resume the node runs again from its first line, so put
+      emails, payments and other one-off actions <em>after</em> the interrupt.</li>
+  </ul>
+</section>
+
+<section id="run">
+  <div class="sec-head"><h2>Run it</h2></div>
+  <pre><code>pip install -r 01_langgraph/requirements.txt
+cp .env.example .env                        <span class="c"># add GROQ_API_KEY (or set LLM_PROVIDER + another key)</span>
+
+python 01_langgraph/02_agent_with_tools.py
+python 01_langgraph/05_multi_agent.py
+python 01_langgraph/06_langgraph_deep_dive.py          <span class="c"># you approve the draft</span>
+AUTO_APPROVE=1 python 01_langgraph/06_langgraph_deep_dive.py</code></pre>
+  <p>Or open <code>01_langgraph/01_langgraph.ipynb</code> in Google Colab or VS Code. Every step is a cell.</p>
+</section>
+
+<footer>SA-LIB AI Workshop 2026 · Day 2 · Built on the same agent as
+  <a href="https://github.com/Moh4696/build-ai-agents-free">build-ai-agents-free</a> (MIT) · Tested with langgraph 1.2</footer>
+
+</div>
+</body>
+</html>

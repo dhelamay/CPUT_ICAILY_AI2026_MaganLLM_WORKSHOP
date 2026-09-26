@@ -1,0 +1,6 @@
+mlflow>=3.0
+langgraph>=1.0
+langchain-openai>=1.0
+openai
+python-dotenv
+ddgs

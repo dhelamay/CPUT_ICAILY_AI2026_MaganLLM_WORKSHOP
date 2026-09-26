@@ -1,0 +1,15 @@
+openai
+python-dotenv
+ddgs
+# for 03 and 04 (the LangGraph agent)
+langgraph>=1.0
+langchain>=1.0
+langchain-openai>=1.0
+# 03 — Arize Phoenix (local UI, no account)
+arize-phoenix
+openinference-instrumentation-langchain
+openinference-instrumentation-openai
+# 04 — Langfuse (free cloud or self-hosted)
+langfuse>=3
+# 05 — LangSmith (free Developer account)
+langsmith

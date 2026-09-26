@@ -1,0 +1,4 @@
+google-adk>=1.0
+litellm          # lets ADK use groq / deepseek / openai / ollama ... (gemini works natively)
+python-dotenv
+ddgs

@@ -1,0 +1,17 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+# MLflow local store
+mlflow.db
+mlruns/
+mlartifacts/
+# agent sessions
+*.db
+.adk/
+# monitoring output
+agent_monitor.db
+agent_events.log
