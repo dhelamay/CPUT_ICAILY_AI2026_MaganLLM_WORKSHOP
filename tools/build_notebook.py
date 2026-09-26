@@ -1,10 +1,13 @@
 """
-Build notebooks/SA_LIB_Day1_RAG_Workshop.ipynb from the .py files (the scripts are the source of truth).
+Build the Day 1 notebooks from the .py files (the scripts are the source of truth).
 
     python tools/build_notebook.py
 
-The notebook is self-contained for Google Colab: it installs packages, loads keys,
-and writes rag_common.py + the data/ files with %%writefile. To use YOUR PDF in Colab,
+  notebooks/SA_LIB_Day1_RAG_Workshop.ipynb    <- the main scripts + rag_common.py
+  notebooks/SA_LIB_Day1_RAG_Standalone.ipynb  <- standalone/ scripts: every cell is complete, no rag_common.py
+
+The notebooks are self-contained for Google Colab: they install packages, load keys,
+and write the data/ files (and rag_common.py) with %%writefile. To use YOUR PDF in Colab,
 upload it into the data/ folder (file browser on the left) before running the index cells.
 """
 
@@ -15,6 +18,12 @@ ROOT = Path(__file__).resolve().parents[1]
 GITHUB_REPO = "YOUR_GITHUB_USER/SA_LIB_WORKSHOP_Day1"  # <- change after you push to GitHub, then re-run
 KEYS = ["GROQ_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY", "DEEPSEEK_API_KEY", "OPENROUTER_API_KEY"]
 SCRIPTS = sorted(p.name for p in ROOT.glob("[0-9][0-9]_*.py"))
+STANDALONE = sorted(p.name for p in (ROOT / "standalone").glob("[0-9][0-9]_*.py"))
+STANDALONE_INTRO = (
+    "**Standalone version:** the same 12 examples, but every code cell is **complete**. It loads the data, "
+    "builds the index, calls the LLM and runs the technique, **without** `rag_common.py`. You can run any "
+    "example on its own after the setup cells. The setup part repeats in every cell on purpose: read it once "
+    "in **01**, then jump to *the technique* in the others. Embeddings are always the free local model.")
 
 
 def md(text):
@@ -35,13 +44,16 @@ def split_header(src: str):
     return "\n".join(header).strip(), "\n".join(lines).strip()
 
 
-def build() -> Path:
+def build(name: str = "SA_LIB_Day1_RAG_Workshop", standalone: bool = False) -> Path:
     reqs = [line.split("#")[0].strip() for line in (ROOT / "requirements.txt").read_text().splitlines()]
     reqs = " ".join(f'"{r}"' for r in reqs if r)
-    colab = f"https://colab.research.google.com/github/{GITHUB_REPO}/blob/main/notebooks/SA_LIB_Day1_RAG_Workshop.ipynb"
+    colab = f"https://colab.research.google.com/github/{GITHUB_REPO}/blob/main/notebooks/{name}.ipynb"
+    title = "from simple RAG to agentic RAG" + (" (standalone code)" if standalone else "")
+    intro = f"{STANDALONE_INTRO}\n\n" if standalone else ""
     cells = [
-        md(f"# SA-LIB AI Workshop 2026 — Day 1: from simple RAG to agentic RAG\n\n"
+        md(f"# SA-LIB AI Workshop 2026 — Day 1: {title}\n\n"
            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({colab})\n\n"
+           f"{intro}"
            "| # | technique | idea in one line |\n|---|---|---|\n"
            "| 00 | no RAG | the problem: the LLM doesn't know your documents |\n"
            "| 01 | naive RAG | index → retrieve → generate |\n"
@@ -91,22 +103,33 @@ def build() -> Path:
     for doc in sorted((ROOT / "data").glob("*")):
         if doc.suffix.lower() in {".md", ".txt"}:
             cells.append(code(f"%%writefile data/{doc.name}\n" + doc.read_text()))
-    cells += [md("### The shared toolbox: `rag_common.py`\nLLM client for every provider, embeddings, loading "
-                 "(md/txt/pdf), chunking, and a tiny vector store written from scratch."),
-              code("%%writefile rag_common.py\n" + (ROOT / "rag_common.py").read_text())]
-    for name in SCRIPTS:
-        header, body = split_header((ROOT / name).read_text())
-        cells += [md(f"## {name[:2]}. `{name}`\n\n{header}"), code(body)]
+    if standalone:
+        folder, scripts = ROOT / "standalone", STANDALONE
+    else:
+        folder, scripts = ROOT, SCRIPTS
+        cells += [md("### The shared toolbox: `rag_common.py`\nLLM client for every provider, embeddings, loading "
+                     "(md/txt/pdf), chunking, and a tiny vector store written from scratch."),
+                  code("%%writefile rag_common.py\n" + (ROOT / "rag_common.py").read_text())]
+    for script in scripts:
+        header, body = split_header((folder / script).read_text())
+        header = header.replace("  (standalone: no rag_common.py, everything is in this file)", "")
+        # a notebook has no __file__: the data/ cells above write the documents next to the notebook
+        body = body.replace('Path(__file__).resolve().parent.parent / "data"   # the same data/ folder as the main examples',
+                            'Path("data")   # written by the data/ cells at the top of this notebook')
+        assert "__file__" not in body, f"{script}: uses __file__, which does not exist in a notebook"
+        cells += [md(f"## {script[:2]}. `{script}`\n\n{header}"), code(body)]
     cells.append(md("---\n*SA-LIB AI Workshop 2026 · Day 1*"))
+    prefix = "d1s" if standalone else "d1"
     for n, cell in enumerate(cells):
-        cell["id"] = f"d1-{n:02d}"
+        cell["id"] = f"{prefix}-{n:02d}"
     nb = {"cells": cells, "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
                                        "language_info": {"name": "python"}, "colab": {"provenance": []}},
           "nbformat": 4, "nbformat_minor": 5}
-    out = ROOT / "notebooks" / "SA_LIB_Day1_RAG_Workshop.ipynb"
+    out = ROOT / "notebooks" / f"{name}.ipynb"
     out.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n")
     return out
 
 
 if __name__ == "__main__":
     print("built", build().relative_to(ROOT))
+    print("built", build("SA_LIB_Day1_RAG_Standalone", standalone=True).relative_to(ROOT))

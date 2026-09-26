@@ -34,6 +34,9 @@ Twelve small, runnable Python files that take you from "the LLM doesn't know my 
 Supporting files:
 
 - [`rag_common.py`](rag_common.py): the shared toolbox (LLM client, embeddings, loader, chunker, vector store)
+- [`standalone/`](standalone/): the same 12 examples, each in **one complete file** that doesn't use
+  `rag_common.py`. Easier to read from top to bottom. Notebook:
+  [`notebooks/SA_LIB_Day1_RAG_Standalone.ipynb`](notebooks/SA_LIB_Day1_RAG_Standalone.ipynb)
 - [`data/`](data/): sample documents about *Sahara Sun Energy*, a **fictional** Libyan solar company, so
   the LLM can't answer from memory. Replace them with your own files (`.md`, `.txt`, `.pdf`).
 - [`notebooks/SA_LIB_Day1_RAG_Workshop.ipynb`](notebooks/SA_LIB_Day1_RAG_Workshop.ipynb): all 12
