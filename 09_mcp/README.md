@@ -15,11 +15,21 @@ Desktop, VS Code / Copilot, Cursor, the OpenAI Agents SDK, Google ADK, LangGraph
 | `weather_server.py` | a **simple MCP server** that wraps a real public **API** (Open-Meteo weather, free, no key). Tools: `get_current_weather`, `get_forecast`, `word_count` |
 | `01_mcp_client.py` | **MCP + API, no LLM**: start the server, handshake, **list tools** (with their input schemas), **call tools** |
 | `02_mcp_agent.py` | **MCP + API + one agent**: the LLM discovers the server's tools at run time and decides when to call them |
+| `fastmcp_server.py` | a **multi-tool server built with FastMCP** (`pip install fastmcp`). 6 tools: `calculate`, `convert_units`, `text_stats`, `current_time`, `get_weather`, `wikipedia_summary`. Runs over stdio or HTTP |
+| `03_fastmcp_client.py` | **FastMCP client, no LLM**: `Client("fastmcp_server.py")` starts the server itself, then lists and calls every tool |
+| `04_fastmcp_agent.py` | **FastMCP client + one agent**: the LLM picks from all 6 tools, often several for one question |
 
 ```bash
 pip install -r 09_mcp/requirements.txt
 python 09_mcp/01_mcp_client.py      # no API key needed at all
 python 09_mcp/02_mcp_agent.py       # needs your LLM key (LLM_PROVIDER in .env)
+
+python 09_mcp/03_fastmcp_client.py  # FastMCP version, no API key needed
+python 09_mcp/04_fastmcp_agent.py   # needs your LLM key
+
+# the same FastMCP server over HTTP (a web server other machines/apps can reach):
+python 09_mcp/fastmcp_server.py http                          # terminal 1 -> http://127.0.0.1:8000/mcp
+python 09_mcp/03_fastmcp_client.py http://127.0.0.1:8000/mcp  # terminal 2
 ```
 
 Example output of `01_mcp_client.py`:
@@ -76,5 +86,7 @@ Tripoli, Libya: 25.0 °C, wind 11.6 km/h, partly cloudy (at 2026-09-26T15:30 UTC
 > Note: the official `mcp` SDK is now at version **2.x**. Many tutorials still show 1.x code
 > (`from mcp.server.fastmcp import FastMCP`), which was renamed to `from mcp.server.mcpserver import MCPServer`.
 > Tool fields are snake_case now (`tool.input_schema`).
+> The **standalone `fastmcp` package** (`from fastmcp import FastMCP, Client`) is a separate project, still
+> called FastMCP. It adds a ready-made `Client`, HTTP serving and more. `fastmcp_server.py`, `03` and `04` use it.
 
-Notebook: [`09_mcp.ipynb`](09_mcp.ipynb)
+Notebooks: [`09_mcp.ipynb`](09_mcp.ipynb) (weather server, `01`, `02`) · [`09_mcp_fastmcp.ipynb`](09_mcp_fastmcp.ipynb) (FastMCP server, `03`, `04`, HTTP)

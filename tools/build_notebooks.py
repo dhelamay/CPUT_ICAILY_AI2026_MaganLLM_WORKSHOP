@@ -85,7 +85,8 @@ FOLDERS = {
         "scripts": [],
         "files": ["common_model.py", "researcher_server.py", "writer_server.py", "a2a_client.py",
                   "orchestrator.py", "run_demo.py"],
-        "final_cell": "!python run_demo.py",
+        "extra": [("## Run the whole demo\nStarts both A2A servers in the background, runs the plain client "
+                   "and the orchestrator, then stops the servers.", "!python run_demo.py")],
     },
     "08_monitoring": {
         "title": "Monitoring — track calls, tokens, cost, latency and failures",
@@ -107,6 +108,33 @@ FOLDERS = {
                  "**one agent** that discovers the tools at run time and lets the LLM decide when to use them.",
         "scripts": ["01_mcp_client.py", "02_mcp_agent.py"],
         "files": ["weather_server.py"],
+    },
+    "09_mcp_fastmcp": {          # a second notebook in the same folder
+        "folder": "09_mcp",
+        "title": "FastMCP — a multi-tool MCP server, a client, and an agent that picks between the tools",
+        "intro": "**FastMCP** (`pip install fastmcp`) is the most popular high-level way to write MCP servers "
+                 "*and* clients in Python. `fastmcp_server.py` offers **6 tools** (math, units, text, time, weather, "
+                 "Wikipedia); `03` lists and calls them with FastMCP's `Client` (no LLM, no key); `04` is **one agent** "
+                 "that lets the LLM choose between them. At the end, the same server runs over **HTTP**.",
+        "scripts": ["03_fastmcp_client.py", "04_fastmcp_agent.py"],
+        "files": ["fastmcp_server.py"],
+        "extra": [(
+            "## 3. The same server over HTTP\n"
+            "`stdio` only works when the client starts the server. With `http`, the server is a web service that "
+            "any client (another machine, Claude Desktop, VS Code, ...) can reach at `http://127.0.0.1:8000/mcp`. "
+            "We start it in the background, connect with the **same** `Client` (only the URL changes), then stop it.",
+            "import subprocess, sys, time\n"
+            "from fastmcp import Client\n\n"
+            "server = subprocess.Popen([sys.executable, \"fastmcp_server.py\", \"http\"],\n"
+            "                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)\n"
+            "time.sleep(4)                                    # give the web server a moment to start\n"
+            "try:\n"
+            "    async with Client(\"http://127.0.0.1:8000/mcp\") as client:\n"
+            "        print([t.name for t in await client.list_tools()])\n"
+            "        result = await client.call_tool(\"convert_units\", {\"value\": 42, \"from_unit\": \"km\", \"to_unit\": \"mile\"})\n"
+            "        print(result.data)\n"
+            "finally:\n"
+            "    server.terminate()                            # stop the background server")],
     },
 }
 
@@ -190,7 +218,8 @@ def setup_cells(folder: str, cfg: dict) -> list:
     return cells
 
 
-def build(folder: str, cfg: dict) -> Path:
+def build(notebook: str, cfg: dict) -> Path:
+    folder = cfg.get("folder", notebook)             # several notebooks can share one folder
     cells = setup_cells(folder, cfg)
     for name in cfg.get("files", []):
         header, _ = split_header((ROOT / folder / name).read_text())
@@ -202,9 +231,8 @@ def build(folder: str, cfg: dict) -> Path:
             text, extra = cfg["before"][name]
             cells += [md(text), code(extra)]
         cells += [md(f"## {i}. `{name}`\n\n{header}"), code(notebook_code(body))]
-    if cfg.get("final_cell"):
-        cells += [md("## Run the whole demo\nStarts both A2A servers in the background, runs the plain client "
-                     "and the orchestrator, then stops the servers."), code(cfg["final_cell"])]
+    for text, extra in cfg.get("extra", []):
+        cells += [md(text), code(extra)]
     cells.append(md("---\n*SA-LIB AI Workshop 2026 · based on "
                     "[build-ai-agents-free](https://github.com/Moh4696/build-ai-agents-free) by m0h (MIT)*"))
     for n, cell in enumerate(cells):
@@ -213,11 +241,11 @@ def build(folder: str, cfg: dict) -> Path:
                                                         "name": "python3"},
                                        "language_info": {"name": "python"}, "colab": {"provenance": []}},
           "nbformat": 4, "nbformat_minor": 5}
-    out = ROOT / folder / f"{folder}.ipynb"
+    out = ROOT / folder / f"{notebook}.ipynb"
     out.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n")
     return out
 
 
 if __name__ == "__main__":
-    for folder, cfg in FOLDERS.items():
-        print("built", build(folder, cfg).relative_to(ROOT))
+    for notebook, cfg in FOLDERS.items():
+        print("built", build(notebook, cfg).relative_to(ROOT))
