@@ -15,7 +15,8 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GITHUB_REPO = "YOUR_GITHUB_USER/SA_LIB_WORKSHOP_Day1"  # <- change after you push to GitHub, then re-run
+GITHUB_REPO = "dhelamay/CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP"
+REPO_SUBDIR = "SA_LIB_WORKSHOP_Day1"  # this day's folder inside the repo
 KEYS = ["GROQ_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY", "DEEPSEEK_API_KEY", "OPENROUTER_API_KEY"]
 SCRIPTS = sorted(p.name for p in ROOT.glob("[0-9][0-9]_*.py"))
 STANDALONE = sorted(p.name for p in (ROOT / "standalone").glob("[0-9][0-9]_*.py"))
@@ -47,7 +48,7 @@ def split_header(src: str):
 def build(name: str = "SA_LIB_Day1_RAG_Workshop", standalone: bool = False) -> Path:
     reqs = [line.split("#")[0].strip() for line in (ROOT / "requirements.txt").read_text().splitlines()]
     reqs = " ".join(f'"{r}"' for r in reqs if r)
-    colab = f"https://colab.research.google.com/github/{GITHUB_REPO}/blob/main/notebooks/{name}.ipynb"
+    colab = f"https://colab.research.google.com/github/{GITHUB_REPO}/blob/main/{REPO_SUBDIR}/notebooks/{name}.ipynb"
     title = "from simple RAG to agentic RAG" + (" (standalone code)" if standalone else "")
     intro = f"{STANDALONE_INTRO}\n\n" if standalone else ""
     cells = [

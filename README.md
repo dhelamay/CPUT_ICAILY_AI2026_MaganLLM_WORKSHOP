@@ -56,8 +56,8 @@ Supporting files:
 ### Option A: Linux / macOS / Windows (terminal)
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USER/SA_LIB_WORKSHOP_Day1.git
-cd SA_LIB_WORKSHOP_Day1
+git clone https://github.com/dhelamay/CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP.git
+cd CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP/SA_LIB_WORKSHOP_Day1
 
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
