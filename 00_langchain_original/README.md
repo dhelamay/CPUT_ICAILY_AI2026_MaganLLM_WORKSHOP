@@ -24,3 +24,7 @@ limits, plus a `ddgs` backend that sometimes builds an invalid URL. The region i
 Nothing else was changed.
 
 This folder always uses Groq/Gemini, as in the guide. The other folders read `LLM_PROVIDER` from `.env`.
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

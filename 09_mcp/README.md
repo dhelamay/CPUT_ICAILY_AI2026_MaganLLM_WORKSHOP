@@ -90,3 +90,7 @@ Tripoli, Libya: 25.0 °C, wind 11.6 km/h, partly cloudy (at 2026-09-26T15:30 UTC
 > called FastMCP. It adds a ready-made `Client`, HTTP serving and more. `fastmcp_server.py`, `03` and `04` use it.
 
 Notebooks: [`09_mcp.ipynb`](09_mcp.ipynb) (weather server, `01`, `02`) · [`09_mcp_fastmcp.ipynb`](09_mcp_fastmcp.ipynb) (FastMCP server, `03`, `04`, HTTP)
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

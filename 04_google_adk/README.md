@@ -28,3 +28,7 @@ cd 04_google_adk && adk web        # open http://localhost:8000 → pick "adk_we
 providers go through `LiteLlm(model="openai/<model>", api_base=..., api_key=...)`.
 
 Notebook: [`04_google_adk.ipynb`](04_google_adk.ipynb)
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

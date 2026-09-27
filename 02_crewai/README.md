@@ -30,3 +30,7 @@ Notes:
   simple and free with a message list.
 
 Notebook: [`02_crewai.ipynb`](02_crewai.ipynb)
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

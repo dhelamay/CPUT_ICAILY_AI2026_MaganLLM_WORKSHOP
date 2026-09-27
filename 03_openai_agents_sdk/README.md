@@ -23,3 +23,7 @@ Tracing uploads to the OpenAI dashboard, so it's switched off automatically when
 `OPENAI_API_KEY`. Use MLflow (folder 06) to trace instead.
 
 Notebook: [`03_openai_agents_sdk.ipynb`](03_openai_agents_sdk.ipynb)
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

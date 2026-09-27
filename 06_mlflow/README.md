@@ -33,3 +33,7 @@ They need a judge model (OpenAI by default).
 ⚠️ Don't set `OTEL_SDK_DISABLED=true`: it turns off MLflow tracing.
 
 Notebook: [`06_mlflow.ipynb`](06_mlflow.ipynb). In Colab, read traces with `mlflow.search_traces()`.
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

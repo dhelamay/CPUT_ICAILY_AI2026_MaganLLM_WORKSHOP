@@ -23,3 +23,7 @@ python 05_microsoft_agent_framework/05_multi_agent.py
 ```
 
 Notebook: [`05_microsoft_agent_framework.ipynb`](05_microsoft_agent_framework.ipynb)
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*
