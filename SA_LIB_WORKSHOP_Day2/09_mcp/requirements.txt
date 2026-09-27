@@ -1,0 +1,6 @@
+mcp>=2.0        # the official Model Context Protocol SDK (2.x: FastMCP was renamed MCPServer)
+fastmcp>=4.0    # the standalone FastMCP framework (server + client) used by fastmcp_server.py, 03 and 04
+httpx           # to call the weather API
+openai          # the agent's LLM client (works with every provider in .env)
+python-dotenv
+ddgs

@@ -1,0 +1,5 @@
+google-adk[a2a]>=1.0   # includes a2a-sdk
+litellm
+uvicorn
+python-dotenv
+ddgs

@@ -1,0 +1,3 @@
+agent-framework>=1.0
+python-dotenv
+ddgs
