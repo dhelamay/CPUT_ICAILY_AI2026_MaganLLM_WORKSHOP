@@ -16,7 +16,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GITHUB_REPO = "YOUR_GITHUB_USER/SA_LIB_WORKSHOP_Day2"  # <- change after you push to GitHub, then re-run
+GITHUB_REPO = "dhelamay/CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP"
+REPO_SUBDIR = "SA_LIB_WORKSHOP_Day2"  # this day's folder inside the repo
 
 KEYS = ["GROQ_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY", "DEEPSEEK_API_KEY", "OPENROUTER_API_KEY",
         "LANGSMITH_API_KEY", "LANGFUSE_PUBLIC_KEY", "LANGFUSE_SECRET_KEY", "LANGFUSE_HOST"]
@@ -166,10 +167,10 @@ def notebook_code(src: str) -> str:
     return src
 
 
-def setup_cells(folder: str, cfg: dict) -> list:
+def setup_cells(folder: str, cfg: dict, notebook: str) -> list:
     reqs = [line.split("#")[0].strip() for line in (ROOT / folder / "requirements.txt").read_text().splitlines()]
     reqs = " ".join(f'"{r}"' for r in reqs if r)
-    colab = f"https://colab.research.google.com/github/{GITHUB_REPO}/blob/main/{folder}/{folder}.ipynb"
+    colab = f"https://colab.research.google.com/github/{GITHUB_REPO}/blob/main/{REPO_SUBDIR}/{folder}/{notebook}.ipynb"
     cells = [
         md(f"# {cfg['title']}\n\n"
            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({colab})\n\n"
@@ -220,7 +221,7 @@ def setup_cells(folder: str, cfg: dict) -> list:
 
 def build(notebook: str, cfg: dict) -> Path:
     folder = cfg.get("folder", notebook)             # several notebooks can share one folder
-    cells = setup_cells(folder, cfg)
+    cells = setup_cells(folder, cfg, notebook)
     for name in cfg.get("files", []):
         header, _ = split_header((ROOT / folder / name).read_text())
         cells += [md(f"### helper file: `{name}`\n{header}"),

@@ -75,8 +75,8 @@ chat-completions* protocol. The shared helper `workshop_common.py` only swaps `b
 ### Option A: Linux / macOS / Windows terminal
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USER/SA_LIB_WORKSHOP_Day2.git
-cd SA_LIB_WORKSHOP_Day2
+git clone https://github.com/dhelamay/CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP.git
+cd CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP/SA_LIB_WORKSHOP_Day2
 cp .env.example .env            # Windows: copy .env.example .env   -> then paste your key
 
 # pick a folder, e.g. CrewAI
