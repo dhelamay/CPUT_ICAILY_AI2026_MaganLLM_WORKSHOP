@@ -42,3 +42,7 @@ python standalone/01_naive_rag.py        # run from the repo root (or from insid
 | 09 | [`09_adaptive_rag.py`](09_adaptive_rag.py) | adaptive RAG (router) |
 | 10 | [`10_agentic_rag.py`](10_agentic_rag.py) | agentic RAG (tool loop, no framework) |
 | 11 | [`11_agentic_rag_langgraph.py`](11_agentic_rag_langgraph.py) | agentic RAG with LangGraph |
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

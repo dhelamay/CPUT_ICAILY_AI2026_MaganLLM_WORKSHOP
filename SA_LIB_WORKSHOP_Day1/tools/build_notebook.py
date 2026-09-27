@@ -54,6 +54,9 @@ def build(name: str = "SA_LIB_Day1_RAG_Workshop", standalone: bool = False) -> P
     cells = [
         md(f"# SA-LIB AI Workshop 2026 — Day 1: {title}\n\n"
            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({colab})\n\n"
+           "**Author:** Dr. Nasser Mooman · Magan AI Inc. · nmooman@gmail.com · written with help from Claude (Anthropic)\n\n"
+           "> ⚠️ **Teaching code — do not use in production.** Short on purpose: no authentication, input validation, "
+           "prompt-injection protection, error handling or tests. LLM answers can be wrong. Provided as is, without warranty.\n\n"
            f"{intro}"
            "| # | technique | idea in one line |\n|---|---|---|\n"
            "| 00 | no RAG | the problem: the LLM doesn't know your documents |\n"
@@ -71,7 +74,9 @@ def build(name: str = "SA_LIB_Day1_RAG_Workshop", standalone: bool = False) -> P
         md("## 0. Setup"),
         code(f"%pip install -q {reqs}"),
         md("### API keys and provider\n"
-           "* **Colab:** 🔑 *Secrets* panel → add e.g. `GROQ_API_KEY` or `DEEPSEEK_API_KEY` or `OPENAI_API_KEY`.\n"
+           "**Bring your own LLM API key** (Groq and Gemini have free tiers). No key is needed only if you already run a "
+           "local server (Ollama, SGLang or vLLM): set `LLM_PROVIDER=ollama`, `OLLAMA_BASE_URL` and `LLM_MODEL`.\n\n"
+                      "* **Colab:** 🔑 *Secrets* panel → add e.g. `GROQ_API_KEY` or `DEEPSEEK_API_KEY` or `OPENAI_API_KEY`.\n"
            "* **VS Code / Linux:** put keys in `.env` (copy `.env.example`).\n\n"
            "`LLM_PROVIDER`: `openai` · `deepseek` · `groq` · `gemini` · `openrouter` · `ollama`  \n"
            "`EMBEDDING_PROVIDER`: `local` (free, on CPU) · `openai` · `gemini` · `ollama`"),
