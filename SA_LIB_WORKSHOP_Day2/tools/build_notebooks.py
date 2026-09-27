@@ -174,13 +174,18 @@ def setup_cells(folder: str, cfg: dict, notebook: str) -> list:
     cells = [
         md(f"# {cfg['title']}\n\n"
            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({colab})\n\n"
+           "**Author:** Dr. Nasser Mooman · Magan AI Inc. · nmooman@gmail.com · written with help from Claude (Anthropic)\n\n"
+           "> ⚠️ **Teaching code — do not use in production.** Short on purpose: no authentication, input validation, "
+           "prompt-injection protection, error handling or tests. LLM answers can be wrong. Provided as is, without warranty.\n\n"
            f"**SA-LIB AI Workshop 2026 — Day 2: AI Agents**\n\n{cfg['intro']}\n\n"
            "Same example in every framework: **(1) first agent → (2) tools → (3) memory → (4) fallback → "
            "(5) multi-agent → complete agent**."),
         md("## 0. Setup\nInstall the packages (takes ~1 minute in Colab)."),
         code(f"%pip install -q {reqs}"),
         md("### API keys\n"
-           "* **Colab:** click the 🔑 *Secrets* icon on the left, add e.g. `GROQ_API_KEY`, and enable notebook access.\n"
+           "**Bring your own LLM API key** (Groq and Gemini have free tiers). No key is needed only if you already run a "
+           "local server (Ollama, SGLang or vLLM): set `LLM_PROVIDER=ollama`, `OLLAMA_BASE_URL` and `LLM_MODEL`.\n\n"
+                      "* **Colab:** click the 🔑 *Secrets* icon on the left, add e.g. `GROQ_API_KEY`, and enable notebook access.\n"
            "* **VS Code / Jupyter / Linux:** put your keys in the `.env` file in the repo root (copy `.env.example`).\n"
            "* Otherwise you'll be asked to paste a key below.\n\n"
            "Choose the model provider with `LLM_PROVIDER`: `groq` · `gemini` · `openai` · `deepseek` · "

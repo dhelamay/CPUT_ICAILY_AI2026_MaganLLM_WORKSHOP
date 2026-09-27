@@ -46,3 +46,7 @@ doesn't need to change, and that interchangeability is the point of A2A.
 
 Notebook: [`07_a2a_multi_agent.ipynb`](07_a2a_multi_agent.ipynb). It works in Colab too, because the
 servers run on localhost inside the Colab machine.
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

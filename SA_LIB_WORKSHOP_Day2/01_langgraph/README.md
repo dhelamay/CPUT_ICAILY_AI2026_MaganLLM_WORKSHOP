@@ -38,3 +38,7 @@ AUTO_APPROVE=1 python 01_langgraph/06_langgraph_deep_dive.py   # no prompt
 
 Each graph prints Mermaid code. Paste it into https://mermaid.live to see the picture.
 Notebook: [`01_langgraph.ipynb`](01_langgraph.ipynb)
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*

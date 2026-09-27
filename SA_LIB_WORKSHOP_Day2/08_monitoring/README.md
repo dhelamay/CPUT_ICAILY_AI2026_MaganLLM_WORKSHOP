@@ -146,3 +146,7 @@ LangChain-first) or **Langfuse** (open source, self-hostable) for a real deploym
 
 Notebook: [`08_monitoring.ipynb`](08_monitoring.ipynb). In Colab it starts Phoenix inside the notebook
 with `px.launch_app()`.
+
+---
+
+*SA-LIB AI Workshop 2026 · Dr. Nasser Mooman, Magan AI Inc. · nmooman@gmail.com · written with help from Claude. Teaching code, not for production use.*
