@@ -15,3 +15,5 @@ diagram, and when to use it. It goes with [Day 1 of the workshop](../SA_LIB_WORK
 
 To view the web page: `cd "RAG Cheat Sheet-html" && python3 -m http.server`, then open
 http://localhost:8000/Main.dc.html (some browsers block its scripts when opened as a plain file).
+
+Earlier drafts of the sheet (without the author line) are in [older_versions/](older_versions/).
