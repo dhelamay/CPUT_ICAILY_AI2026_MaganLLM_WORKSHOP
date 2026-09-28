@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>RAG Techniques Cheat Sheet</title>
+<meta name="author" content="Dr. Nasser Mooman, Magan AI Inc., nmooman@gmail.com">
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
+<style>
+body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;background:#F7F4EC;color:#1A1915}
+a{color:#1D4E89}a:hover{color:#133A68}
+.rag-cards>div::before{content:"";display:block;width:100%;aspect-ratio:132/96;border:1px solid #E3DFD4;border-radius:10px;background-color:#ffffff;background-image:url(./assets/57ce724db05845127d0915eb9ff8d11d.svg);background-size:400% 500%;background-repeat:no-repeat}
+.rag-cards>div:nth-child(1)::before{background-position:0% 0%}
+.rag-cards>div:nth-child(2)::before{background-position:66.667% 75%}
+.rag-cards>div:nth-child(3)::before{background-position:100% 25%}
+.rag-cards>div:nth-child(4)::before{background-position:0% 50%}
+.rag-cards>div:nth-child(5)::before{background-position:33.333% 50%}
+.rag-cards>div:nth-child(6)::before{background-position:0% 100%}
+.rag-cards>div:nth-child(7)::before{background-position:100% 0%}
+.rag-cards>div:nth-child(8)::before{background-position:66.667% 50%}
+.rag-cards>div:nth-child(9)::before{background-position:66.667% 0%}
+.rag-cards>div:nth-child(10)::before{background-position:33.333% 75%}
+.rag-cards>div:nth-child(11)::before{background-position:33.333% 0%}
+.rag-cards>div:nth-child(12)::before{background-position:33.333% 25%}
+.rag-cards>div:nth-child(13)::before{background-position:100% 50%}
+.rag-cards>div:nth-child(14)::before{background-position:0% 75%}
+.rag-cards>div:nth-child(15)::before{background-position:0% 25%}
+.rag-cards>div:nth-child(16)::before{background-position:33.333% 100%}
+.rag-cards>div:nth-child(17)::before{background-position:66.667% 25%}
+.rag-cards>div:nth-child(18)::before{background-position:100% 75%}
+.rag-cards>div:nth-child(19)::before{background-position:66.667% 100%}
+.rag-cards>div:nth-child(20)::before{background-position:100% 100%}
+</style>
+</helmet>
+<div style="width: 1600px; height: 3560px; box-sizing: border-box; padding: 64px; background: #F7F4EC; display: flex; flex-direction: column; gap: 40px; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1A1915">
+
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; position: relative">
+<div style="position: absolute; top: 0; right: 0; white-space: nowrap; font-size: 16px; color: #4A4740">Prepared by <strong style="color: #1A1915">Dr. Nasser Mooman</strong> · Magan AI Inc. · <a href="mailto:nmooman@gmail.com" style="color: inherit; text-decoration: none">nmooman@gmail.com</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: {{accent}}">Cheat sheet</div>
+<h1 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 72px; font-weight: 700; line-height: 1; letter-spacing: -0.02em">20 RAG Techniques, Explained Simply</h1>
+<p style="margin: 0; font-size: 20px; color: #4A4740">Retrieval-Augmented Generation = look things up first, then let the LLM answer using what it found.</p>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<div style="background: #1A1915; color: #F7F4EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #CFC9BA">STEP 1</div>
+<div style="font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600">Retrieve</div>
+<div style="font-size: 16px; line-height: 1.5; color: #E6E1D4">Search your documents for the pieces most relevant to the question.</div>
+</div>
+<div style="background: #1A1915; color: #F7F4EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #CFC9BA">STEP 2</div>
+<div style="font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600">Augment</div>
+<div style="font-size: 16px; line-height: 1.5; color: #E6E1D4">Paste those pieces into the prompt as context for the model.</div>
+</div>
+<div style="background: #1A1915; color: #F7F4EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #CFC9BA">STEP 3</div>
+<div style="font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600">Generate</div>
+<div style="font-size: 16px; line-height: 1.5; color: #E6E1D4">The LLM writes an answer grounded in that context. Every variant below tweaks one of these steps.</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+<span style="font-size: 15px; font-weight: 600; margin-right: 6px">Families:</span>
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: #E3ECF7; color: #1D4E89">Basics</span>
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: #E5F0E0; color: #2F5D1F">Structure</span>
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: #FBE8D6; color: #8A4211">Better search</span>
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: #F6E1E6; color: #8B2340">Self-checking</span>
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: #EAE4F6; color: #4B2E83">Agents &amp; loops</span>
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: #EAE8E1; color: #45423B">Research models</span>
+</div>
+
+<div class="rag-cards" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">01</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #E3ECF7; color: #1D4E89">Basics</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Standard RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">The classic recipe. Find the top few similar chunks in a vector database and add them to the prompt.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Query → Retrieve → Generate</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> simple Q&amp;A over your docs.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">02</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #E3ECF7; color: #1D4E89">Basics</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Hybrid RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Mixes keyword search (exact words, like BM25) with vector search (meaning), then merges both result lists.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Keyword + Vector → Merge → Generate</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> names, codes or jargon must match exactly.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">03</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #E3ECF7; color: #1D4E89">Basics</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Contextual RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Before indexing, an LLM adds a short note to each chunk saying where it came from and what it is about.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Chunk + Context note → Index</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> chunks lose meaning on their own ("it grew 3%").</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">04</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #E3ECF7; color: #1D4E89">Basics</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Multi-Source RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Pulls from several places at once: databases, PDFs, APIs, the web. Then combines the results.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">DB + Docs + Web → Combine</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> knowledge is scattered across systems.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">05</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #E5F0E0; color: #2F5D1F">Structure</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Hierarchical RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Indexes in layers: document summaries, then sections, then chunks. Searches from broad to specific.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Doc → Section → Chunk</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> you have huge, well-structured collections.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">06</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #E5F0E0; color: #2F5D1F">Structure</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">RAPTOR</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Groups similar chunks, summarizes each group, and repeats, building a tree. Retrieval can use any level.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Cluster → Summarize → Repeat</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> long docs and "big picture" questions.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">07</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #FBE8D6; color: #8A4211">Better search</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Fusion RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Rewrites your question several ways, searches each version, then fuses the rankings (Reciprocal Rank Fusion).</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">1 query → N queries → Fuse</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> questions are vague or many-sided.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">08</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #FBE8D6; color: #8A4211">Better search</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Multi-Pass RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Retrieves in rounds. What it learns in one pass shapes the next search, like following clues.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Search → Learn → Search again</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> answers need several hops of facts.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">09</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #FBE8D6; color: #8A4211">Better search</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Speculative RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">A small, fast model writes several draft answers from different doc subsets. A big model checks them and picks the best.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Small drafts → Big verifies</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> you need speed and accuracy.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">10</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #FBE8D6; color: #8A4211">Better search</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Auto RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Automates the tuning: tries different chunk sizes, embeddings and rerankers, and keeps whatever scores best on tests.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Try configs → Evaluate → Pick</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> you don't know which setup works best.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">11</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #F6E1E6; color: #8B2340">Self-checking</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Corrective RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Grades the retrieved docs. If they are weak or wrong, it rewrites the query or falls back to web search.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Retrieve → Grade → Fix → Generate</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> your knowledge base is noisy or incomplete.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">12</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #F6E1E6; color: #8B2340">Self-checking</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Self-RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">The model decides if it even needs to retrieve, then critiques itself: are the docs relevant, is my answer supported?</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Need docs? → Answer → Self-grade</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> cutting hallucinations matters most.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">13</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #F6E1E6; color: #8B2340">Self-checking</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Feedback-Based RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Collects user ratings and corrections, and uses them to improve ranking and answers over time.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Answer → User rates → Improve</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> a live product that should learn.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">14</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #F6E1E6; color: #8B2340">Self-checking</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Adversarial RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Built to resist poisoned or misleading documents and hidden prompt injections, often tested against attacks.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Retrieve → Filter threats → Generate</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> sources are untrusted or security matters.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">15</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #EAE4F6; color: #4B2E83">Agents &amp; loops</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Agentic RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">An AI agent plans the work: chooses which tools or sources to search, when, and loops until it is satisfied.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Plan → Use tools → Check → Loop</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> multi-step, open-ended tasks.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">16</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #EAE4F6; color: #4B2E83">Agents &amp; loops</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">ReAct</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">"Reason + Act." The model alternates between thinking out loud and taking an action (like a search), reading each result.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Thought → Action → Observation</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> building tool-using agents.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">17</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #EAE4F6; color: #4B2E83">Agents &amp; loops</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">Interactive RAG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Keeps the user in the loop: asks clarifying questions and lets them steer or refine the search mid-conversation.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Ask → Clarify → Refine → Answer</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> research or exploratory assistants.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">18</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #EAE8E1; color: #45423B">Research models</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">REALM</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Google (2020). The retriever is trained together with the language model during pre-training, learning what to fetch.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Retriever + LM trained jointly</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Why it matters:</strong> an early blueprint for RAG.</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">19</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #EAE8E1; color: #45423B">Research models</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">RePLUG</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Treats the LLM as a black box. Feeds each doc separately, blends the outputs, and can tune the retriever from LLM feedback.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Doc 1..N → LLM → Ensemble</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Use when:</strong> you can't modify the model (API-only).</p>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #E3DFD4; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6B675E">20</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #EAE8E1; color: #45423B">Research models</span></div>
+<h3 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 25px; font-weight: 600">ATLAS</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3A3832">Meta. A retriever and a smaller language model trained together, strong on knowledge tasks with only a few examples.</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: #F3EFE5; padding: 8px 10px; border-radius: 8px">Retriever ⇄ Reader (joint training)</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3A3832"><strong style="color: #1A1915">Why it matters:</strong> small model, big-model results.</p>
+</div>
+
+</div>
+
+<div style="background: #ffffff; border: 2px solid #1A1915; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 34px; font-weight: 700">Quick pick: which one do I need?</h2>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 28px; font-size: 16px; line-height: 1.45">
+<div><strong>Just starting?</strong><br>Standard → then Hybrid</div>
+<div><strong>Missing exact terms?</strong><br>Hybrid RAG</div>
+<div><strong>Chunks lack context?</strong><br>Contextual RAG</div>
+<div><strong>Long documents?</strong><br>RAPTOR or Hierarchical</div>
+<div><strong>Vague questions?</strong><br>Fusion RAG</div>
+<div><strong>Bad search results?</strong><br>Corrective RAG</div>
+<div><strong>Too many hallucinations?</strong><br>Self-RAG</div>
+<div><strong>Multi-step tasks?</strong><br>Agentic RAG or ReAct</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#1D4E89"},"$preview":{"width":1600,"height":3560}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#1D4E89' };
+}
+}
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ Hands-on code for the two-day workshop. Each day is a self-contained folder with
 |---|---|---|---|
 | 1 | [SA_LIB_WORKSHOP_Day1](SA_LIB_WORKSHOP_Day1/) | RAG, from naive RAG to agentic RAG (12 steps) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dhelamay/CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP/blob/main/SA_LIB_WORKSHOP_Day1/notebooks/SA_LIB_Day1_RAG_Workshop.ipynb) |
 | 2 | [SA_LIB_WORKSHOP_Day2](SA_LIB_WORKSHOP_Day2/) | AI agents: one agent in LangChain, LangGraph, CrewAI, OpenAI Agents SDK, Google ADK, Microsoft Agent Framework, plus MLflow, A2A, monitoring and MCP | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dhelamay/CPUT_ICAILY_AI2026_MaganLLM_WORKSHOP/blob/main/SA_LIB_WORKSHOP_Day2/01_langgraph/01_langgraph.ipynb) |
+| — | [RAG_Cheat_Sheet](RAG_Cheat_Sheet/) | one-page cheat sheet: 20 RAG techniques explained simply (PDF, PNG, HTML) | [open the PDF](<RAG_Cheat_Sheet/RAG Cheat Sheet_onepage.pdf>) |
 
 > [!WARNING]
 > **Teaching code — do not use in production.** These are sample programs for a workshop. They are kept
