@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Engineering with sample_ocr.pdf</title>
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, #f4efe4 0%, #dbe7df 45%, #c6d6e6 100%);
+      --ink: #18222d;
+      --muted: #4f5e6c;
+      --card: rgba(255, 252, 246, 0.86);
+      --line: rgba(24, 34, 45, 0.14);
+      --accent: #0e7c66;
+      --accent-2: #c96c1a;
+      --shadow: 0 18px 50px rgba(24, 34, 45, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1120px, calc(100vw - 32px));
+      margin: 32px auto 48px;
+    }
+
+    .hero,
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -60px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(14, 124, 102, 0.18), rgba(14, 124, 102, 0));
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.1;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      max-width: 12ch;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+    }
+
+    p {
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(14, 124, 102, 0.1);
+      color: var(--accent);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-grid,
+    .prompt-grid,
+    .tips-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1.5fr 1fr;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 28px;
+      margin-top: 22px;
+    }
+
+    .fact-box {
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid var(--line);
+    }
+
+    .fact-box strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 1.05rem;
+    }
+
+    .steps {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .prompt-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .prompt-card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .prompt-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 30px rgba(24, 34, 45, 0.08);
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(201, 108, 26, 0.12);
+      color: var(--accent-2);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    pre {
+      margin: 14px 0 0;
+      padding: 16px;
+      border-radius: 16px;
+      overflow-x: auto;
+      background: #17212b;
+      color: #eef5fb;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    }
+
+    .tips-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .tip {
+      padding: 18px;
+      border-left: 4px solid var(--accent);
+      background: rgba(255, 255, 255, 0.62);
+      border-radius: 16px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        padding: 28px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <span class="eyebrow">Workshop Guide</span>
+      <div class="hero-grid">
+        <div>
+          <h1>Prompt Engineering with a Real PDF</h1>
+          <p>
+            This guide uses <code>sample_ocr.pdf</code>, a searchable invoice PDF, to teach beginners how prompts shape model behavior.
+            The simplified code reads the PDF, chunks it, retrieves the most relevant chunk, and sends that chunk plus the question to Groq.
+          </p>
+        </div>
+        <div class="fact-box">
+          <strong>What the code is doing</strong>
+          <ol class="steps">
+            <li>Read text from <code>sample_ocr.pdf</code>.</li>
+            <li>Split the text into smaller chunks.</li>
+            <li>Turn chunks and the question into embeddings.</li>
+            <li>Choose the most relevant chunk.</li>
+            <li>Ask Groq to answer using that chunk only.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>How Prompting Works Here</h2>
+      <p>
+        Prompt engineering is not magic wording. It is the practice of giving the model a clear task, a clear format, and clear boundaries.
+        In this project, retrieval already narrows the context. Your prompt still matters because it tells the model what kind of answer to produce from that context.
+      </p>
+      <div class="tips-grid">
+        <div class="tip"><strong>Be specific.</strong><br>Ask for the exact output you want: summary, table, bullets, risks, or translation.</div>
+        <div class="tip"><strong>Set constraints.</strong><br>Say things like “use bullets,” “quote totals,” or “answer in plain English.”</div>
+        <div class="tip"><strong>Name the audience.</strong><br>Ask for an answer “for a finance officer,” “for a student,” or “for a customs team.”</div>
+        <div class="tip"><strong>Ask for structure.</strong><br>Structured prompts usually produce cleaner teaching examples than vague prompts.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Prompt Examples on the Same File</h2>
+      <p>
+        These all use the same document. What changes is the instruction you give the model. That is the easiest way to teach beginners that prompt design changes the result even when the source file is identical.
+      </p>
+      <div class="prompt-grid">
+        <article class="prompt-card">
+          <span class="tag">Starter</span>
+          <h3>Basic Summary</h3>
+          <p>Use this first to show a simple, broad question.</p>
+          <pre><code>What are the main findings in this document?</code></pre>
+        </article>
+
+        <article class="prompt-card">
+          <span class="tag">Structured</span>
+          <h3>Executive Summary</h3>
+          <p>Useful for decision-makers who want fast scanning.</p>
+          <pre><code>Summarize this invoice in 5 bullet points.
+Include seller, buyer, total amount, payment terms, and shipping terms.</code></pre>
+        </article>
+
+        <article class="prompt-card">
+          <span class="tag">Extraction</span>
+          <h3>Key Data Fields</h3>
+          <p>Good for teaching information extraction.</p>
+          <pre><code>Extract the following fields from the document:
+- invoice number
+- invoice date
+- customer name
+- total amount
+- currency
+- country of origin
+
+Return the answer as JSON.</code></pre>
+        </article>
+
+        <article class="prompt-card">
+          <span class="tag">Verification</span>
+          <h3>Consistency Check</h3>
+          <p>Shows how to ask the model to inspect instead of summarize.</p>
+          <pre><code>Check whether the quantities, unit prices, and line totals are internally consistent.
+If you find any mismatch, explain it clearly.</code></pre>
+        </article>
+
+        <article class="prompt-card">
+          <span class="tag">Audience</span>
+          <h3>Explain for a Beginner</h3>
+          <p>Good example of audience-targeted prompting.</p>
+          <pre><code>Explain this document to a first-year university student who has never seen a proforma invoice before.
+Use simple language and short paragraphs.</code></pre>
+        </article>
+
+        <article class="prompt-card">
+          <span class="tag">Operations</span>
+          <h3>Procurement View</h3>
+          <p>Shows how role framing changes the answer.</p>
+          <pre><code>You are helping a hospital procurement team.
+List the ordered items, quantities, prices, and anything they should verify before approval.</code></pre>
+        </article>
+
+        <article class="prompt-card">
+          <span class="tag">Finance</span>
+          <h3>Financial Risk Review</h3>
+          <p>Good for teaching critical prompts instead of descriptive prompts.</p>
+          <pre><code>Identify the main financial and contractual risks in this invoice.
+Focus on payment terms, shipping terms, and any ambiguity in the pricing lines.</code></pre>
+        </article>
+
+        <article class="prompt-card">
+          <span class="tag">Comparison</span>
+          <h3>Arabic vs English Issues</h3>
+          <p>Shows how to ask for discrepancies between representations.</p>
+          <pre><code>Point out any inconsistencies or possible OCR mistakes in the document text.
+Separate confirmed facts from uncertain text.</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>How to Teach New Users</h2>
+      <div class="tips-grid">
+        <div class="tip"><strong>Step 1.</strong><br>Start with the basic summary prompt so learners see the default behavior.</div>
+        <div class="tip"><strong>Step 2.</strong><br>Run a structured prompt next so they notice cleaner formatting.</div>
+        <div class="tip"><strong>Step 3.</strong><br>Try a role-based prompt like procurement or finance to show perspective.</div>
+        <div class="tip"><strong>Step 4.</strong><br>End with a verification prompt to show that prompts can inspect, not just summarize.</div>
+      </div>
+      <p class="footer-note">
+        Teaching takeaway: the file stays the same, the retrieval stays the same, and the model stays the same. The prompt changes the job.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# SA-LIB Workshop Day 1 — RAG
+openai>=1.40            # one client for every provider (all are OpenAI-compatible)
+python-dotenv           # loads OPENROUTER_API_KEY and other .env settings
+numpy                   # cosine similarity for embedding search
+fastembed>=0.4          # free local embeddings + cross-encoder re-ranker (no torch needed)
+pypdf                   # read PDFs dropped into data/
+tiktoken                # token-based chunking in rag1_simple_pdf.py
+ocrmypdf                # optional OCR helper for scanned PDFs; also needs system tools like ghostscript
+rank-bm25               # keyword search for hybrid RAG
+networkx                # knowledge graph for graph RAG
+ddgs                    # free DuckDuckGo web search (no key)
+# OCR fallback in rag1_simple_pdf.py can also use system tools:
+#   tesseract, pdftoppm/poppler, pdfunite, ghostscript
+# only for 11_agentic_rag_langgraph.py
+langgraph>=1.0
+langchain-openai>=1.0
